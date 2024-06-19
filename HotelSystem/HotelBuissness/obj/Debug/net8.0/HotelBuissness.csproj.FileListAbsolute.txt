@@ -1,0 +1,13 @@
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/bin/Debug/net8.0/HotelBuissness.deps.json
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/bin/Debug/net8.0/HotelBuissness.dll
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/bin/Debug/net8.0/HotelBuissness.pdb
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/obj/Debug/net8.0/HotelBuissness.GeneratedMSBuildEditorConfig.editorconfig
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/obj/Debug/net8.0/HotelBuissness.AssemblyInfoInputs.cache
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/obj/Debug/net8.0/HotelBuissness.AssemblyInfo.cs
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/obj/Debug/net8.0/HotelBuissness.csproj.CoreCompileInputs.cache
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/obj/Debug/net8.0/HotelBuissness.sourcelink.json
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/obj/Debug/net8.0/HotelBuissness.dll
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/obj/Debug/net8.0/refint/HotelBuissness.dll
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/obj/Debug/net8.0/HotelBuissness.pdb
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/obj/Debug/net8.0/ref/HotelBuissness.dll
+/home/abdullah/Desktop/c# Projects/HotelSystem/HotelBuissness/obj/Debug/net8.0/HotelBuissness.csproj.AssemblyReference.cache
