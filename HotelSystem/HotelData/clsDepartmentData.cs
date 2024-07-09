@@ -8,7 +8,17 @@ namespace HotelData
     public class clsDepartmentData
     {
 
-        public static  string connectionUrl = clsConnectionOperation.connectionString["ConnectionStrings:connectionDefult"]??"";
+        public static string connectionUrl = clsConnectionOperation.connectionString["ConnectionStrings:connectionDefult"] ?? "";
+        private object update;
+        private int id;
+        private string name;
+
+        public clsDepartmentData(object update, int id, string name)
+        {
+            this.update = update;
+            this.id = id;
+            this.name = name;
+        }
 
         public static bool findDepartment
             (
@@ -222,7 +232,7 @@ namespace HotelData
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string qery = @"select * from Department_view";
+                    string qery = @"select * from Departments";
 
                     using (SqlCommand cmd = new SqlCommand(qery, con))
                     {
@@ -244,7 +254,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
             return dtEmployeeType;
@@ -279,6 +289,39 @@ namespace HotelData
             }
             return isBlock;
         }
+
+
+        public static bool isDepartmentExistByID(int id)
+        {
+            bool isBlock = false;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionUrl))
+                {
+                    conn.Open();
+                    string query = @"select found = 1 from Departments where  departmentID = @id ";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", id);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                isBlock = (bool)reader.Read();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error is :" + ex.ToString());
+            }
+            return isBlock;
+        }
+
+
 
     }
 }

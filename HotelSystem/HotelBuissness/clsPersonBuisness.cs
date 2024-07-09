@@ -44,86 +44,163 @@ namespace HotelBuisness
         }
 
 
-        public static clsPersonBuisness findPersonByID(int id)
+        public static clsPersonBuisness? findPersonByID(int id)
         {
             string firstName = "";
             string lastName = "";
             string nationalNo = "";
             DateTime brithDay = DateTime.Now;
             DateTime createdDate = DateTime.Now;
-
-            if (clsPeoplesData.findPerson(id, ref firstName, ref lastName, ref brithDay, ref createdDate, ref nationalNo))
+            try
             {
-                return new clsPersonBuisness(enMode.update, id, firstName, lastName, brithDay, createdDate, nationalNo);
+
+
+                if (clsPeoplesData.findPerson(id, ref firstName, ref lastName, ref brithDay, ref createdDate, ref nationalNo))
+                {
+                    return new clsPersonBuisness(enMode.update, id, firstName, lastName, brithDay, createdDate, nationalNo);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("some thing Rowng");
             }
 
-            return null;
         }
 
-        public static clsPersonBuisness findPersonByNationalNo(string nationalNo)
+        public static clsPersonBuisness? findPersonByNationalNo(string nationalNo)
         {
             string firstName = "";
             string lastName = "";
             int id = 0;
             DateTime brithDay = DateTime.Now;
             DateTime createdDate = DateTime.Now;
-
-            if (clsPeoplesData.findPerson(nationalNo, ref id, ref firstName, ref lastName, ref brithDay, ref createdDate))
+            try
             {
-                return new clsPersonBuisness(enMode.update, id, firstName, lastName, brithDay, createdDate, nationalNo);
-            }
 
-            return null;
+                if (clsPeoplesData.findPerson(nationalNo, ref id, ref firstName, ref lastName, ref brithDay, ref createdDate))
+                {
+                    return new clsPersonBuisness(enMode.update, id, firstName, lastName, brithDay, createdDate, nationalNo);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Some Thing Wrong");
+            }
         }
 
         private bool _add()
         {
-            this.id = clsPeoplesData.createPerson(firstName, lastName, brithDay, createdDate, nationalNo);
-            return (id != 0);
+            try
+            {
+
+                this.id = clsPeoplesData.createPerson(firstName, lastName, brithDay, createdDate, nationalNo);
+                return (id != 0);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Some Thing Wrong");
+            }
         }
 
         private bool _update()
         {
-            return clsPeoplesData.updatePerson(id, firstName, lastName, brithDay, nationalNo);
+            try
+            {
+
+                return clsPeoplesData.updatePerson(id, firstName, lastName, brithDay, nationalNo);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Some Thing Wrong");
+            }
         }
 
         public bool save()
         {
-            switch (_mode)
+            try
             {
-                case enMode.add:
-                    {
-                        if (_add())
-                        {
-                            //       _mode = enMode.update;
-                            return true;
-                        }
-                        return false;
-                    }
 
-                case enMode.update:
-                    {
-                        if (_update())
+                switch (_mode)
+                {
+                    case enMode.add:
                         {
-                            return true;
+                            if (_add())
+                            {
+                                //       _mode = enMode.update;
+                                return true;
+                            }
+                            return false;
                         }
-                        return false;
-                    }
+
+                    case enMode.update:
+                        {
+                            if (_update())
+                            {
+                                return true;
+                            }
+                            return false;
+                        }
+
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Some Thing Wrong");
 
             }
-            return false;
         }
 
 
         public static bool deletePersonByID(int id)
         {
-            return clsPeoplesData.deletePersonByID(id);
+            try
+            {
+
+                return clsPeoplesData.deletePersonByID(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Some Thing Wrong");
+
+            }
         }
 
 
         public static bool isPersonExistByNationalNo(string nationalNo)
         {
-            return clsPeoplesData.isPersonExistByNationalNo(nationalNo);
+            try
+            {
+
+                return clsPeoplesData.isPersonExistByNationalNo(nationalNo);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Some Thing Wrong");
+
+            }
+
+
+        }
+
+        public static bool isPersonExistByID(int id)
+        {
+            try
+            {
+
+                return clsPeoplesData.isPersonExistByID(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Some Thing Wrong");
+
+            }
+
+
         }
 
     }

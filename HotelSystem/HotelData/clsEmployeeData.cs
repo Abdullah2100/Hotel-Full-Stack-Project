@@ -33,7 +33,7 @@ namespace HotelData
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string qery = @"select * from Employees where employeeID = @id";
+                    string qery = @"select top 1 * from Employees where employeeID = @id";
 
                     using (SqlCommand cmd = new SqlCommand(qery, con))
                     {
@@ -83,7 +83,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
 
@@ -113,7 +113,7 @@ namespace HotelData
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string qery = @"select * from Employees where userName = @userName and password = @password";
+                    string qery = @"select top 1 * from Employees where userName = @userName and password = @password";
 
                     using (SqlCommand cmd = new SqlCommand(qery, con))
                     {
@@ -124,24 +124,30 @@ namespace HotelData
                         {
                             if (reader.Read())
                             {
+                                isFound = true;
 
                                 id = (int)reader["employeeID"];
-
-                                departmentID = (int)reader["departmentID"];
-
                                 personID = (int)reader["personID"];
-                                address = (string)reader["address"];
                                 phone = (string)reader["phone"];
                                 isBlock = (bool)reader["isBlock"];
+
+
+                                if (reader["address"] == DBNull.Value)
+                                    address = "";
+                                else address = (string)reader["address"];
+
+
                                 if (reader["image"] != DBNull.Value)
                                     image = (string)reader["image"];
-                                else
-                                    image = "";
+                                else image = "";
 
                                 if (reader["token"] != DBNull.Value)
                                     token = (string)reader["token"];
-                                else
-                                    token = "";
+                                else token = "";
+
+                                if (reader["departmentID"] == DBNull.Value)
+                                    departmentID = 0;
+                                else departmentID = (int)reader["departmentID"];
 
 
                             }
@@ -155,7 +161,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
 
@@ -186,7 +192,7 @@ namespace HotelData
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string qery = @"select * from Employees where phone = @phone";
+                    string qery = @"select  top 1 * from Employees where phone = @phone";
 
                     using (SqlCommand cmd = new SqlCommand(qery, con))
                     {
@@ -231,12 +237,96 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
 
             return isFound;
         }
+
+        public static bool findEmployee(
+                   string token,
+                  ref string phone,
+                  ref int id,
+                  ref string userName,
+                  ref string password,
+                  ref int departmentID,
+                  ref int personID,
+                  ref string address,
+                  ref bool isBlock,
+                  ref string image
+            )
+        {
+            bool isFound = false;
+
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionUrl))
+                {
+                    con.Open();
+                    string qery = @"select top 1 * from Employees where token = @token";
+
+                    using (SqlCommand cmd = new SqlCommand(qery, con))
+                    {
+                        cmd.Parameters.AddWithValue("@token", token);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                isFound = true;
+                                id = (int)reader["employeeID"];
+
+                                if (reader["userName"] != DBNull.Value)
+                                    userName = (string)reader["userName"];
+                                else userName = "";
+
+
+                                if (reader["phone"] != DBNull.Value)
+                                    phone = (string)reader["phone"];
+                                else phone = "";
+
+                                if (reader["password"] != DBNull.Value)
+                                    password = (string)reader["password"];
+                                else password = "";
+
+                                if (reader["image"] != DBNull.Value)
+                                    image = (string)reader["image"];
+                                else image = "";
+
+                                if (reader["departmentID"] != DBNull.Value)
+                                    departmentID = (int)reader["departmentID"];
+                                else departmentID = 0;
+
+                                if (reader["address"] != DBNull.Value)
+                                    address = (string)reader["address"];
+                                else address = "";
+
+                                personID = (int)reader["personID"];
+                                isBlock = (bool)reader["isBlock"];
+
+
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+            return isFound;
+        }
+
+
+
+
 
         public static int createEmployee
             (
@@ -298,7 +388,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
 
@@ -338,7 +428,7 @@ namespace HotelData
                            address = @address,
                            phone = @phone,
                            isBlock = @isBlock,
-                           image = @image
+                           image = @image,
                            token = @token
                            where employeeID = @id";
 
@@ -350,24 +440,33 @@ namespace HotelData
                         cmd.Parameters.AddWithValue("@userName", userName);
 
 
-                        if (password == "")
+                        if (string.IsNullOrEmpty(password))
                             cmd.Parameters.AddWithValue("@password", DBNull.Value);
                         else
                             cmd.Parameters.AddWithValue("@password", password);
 
-                        if (image == "")
+                        if (string.IsNullOrEmpty(image))
                             cmd.Parameters.AddWithValue("@image", DBNull.Value);
                         else
                             cmd.Parameters.AddWithValue("@image", image);
 
-                        if (token == "")
+                        if (string.IsNullOrEmpty(token))
                             cmd.Parameters.AddWithValue("@token", DBNull.Value);
                         else
                             cmd.Parameters.AddWithValue("@token", token);
 
-                        cmd.Parameters.AddWithValue("@departmentID", departmentID);
+
+                        if (departmentID == 0)
+                            cmd.Parameters.AddWithValue("@departmentID", DBNull.Value);
+                        else cmd.Parameters.AddWithValue("@departmentID", departmentID);
+
                         cmd.Parameters.AddWithValue("@personID", personID);
-                        cmd.Parameters.AddWithValue("@address", address);
+
+                        if (string.IsNullOrEmpty(address))
+                            cmd.Parameters.AddWithValue("@address", DBNull.Value);
+                        else cmd.Parameters.AddWithValue("@address", address);
+
+
                         cmd.Parameters.AddWithValue("@isBlock", isBlock);
                         cmd.Parameters.AddWithValue("@phone", phone);
 
@@ -385,7 +484,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
 
@@ -426,7 +525,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
             return isDeleted;
@@ -464,7 +563,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
             return isDeleted;
@@ -502,7 +601,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
             return dtEmployee;
@@ -541,7 +640,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
 
@@ -580,7 +679,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
 
@@ -619,7 +718,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
 
@@ -658,7 +757,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
 
@@ -696,7 +795,7 @@ namespace HotelData
             catch (Exception ex)
             {
 
-                Console.WriteLine("Error is :" + ex.Message);
+                throw ex;
             }
 
 

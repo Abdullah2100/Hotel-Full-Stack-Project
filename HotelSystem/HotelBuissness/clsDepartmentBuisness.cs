@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Linq;
 using HotelData;
 
 namespace HotelBuisness
@@ -16,6 +17,17 @@ namespace HotelBuisness
             id = 0;
             name = "";
         }
+
+        private static clsDepartmentBuisness convertInlineToObject(DataRow row)
+        {
+            return new clsDepartmentBuisness(
+                  enMode.update,
+                 id: (int)row["departmentID"],
+                 name: (string)row["name"]
+            );
+        }
+
+
 
         private clsDepartmentBuisness(enMode mode, int id, string name)
         {
@@ -79,9 +91,22 @@ namespace HotelBuisness
             return false;
         }
 
-        public static DataTable getDepartments()
+        public static List<clsDepartmentBuisness> getDepartments()
         {
-            return clsDepartmentData.getDepartments();
+
+            try
+            {
+                return clsDepartmentData
+                .getDepartments()
+                .AsEnumerable()
+                .Select(e => convertInlineToObject(e))
+                .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
+
         }
 
         public static bool deleteDepartment(int id)
@@ -93,5 +118,12 @@ namespace HotelBuisness
         {
             return clsDepartmentData.isDepartmentExistByName(name);
         }
+
+        public static bool isDepartmentExistByID(int id)
+        {
+            return clsDepartmentData.isDepartmentExistByID(id);
+        }
+
     }
+
 }

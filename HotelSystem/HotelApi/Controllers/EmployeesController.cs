@@ -1,14 +1,19 @@
+using System.Text.Json;
 using HotelApi.Dto;
 using HotelApi.Dto.Employee;
 using HotelApi.Global;
 using HotelApi.Injuction;
 using HotelBuisness;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace HotelApi.Employee.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EmployeesController : ControllerBase
     {
 
@@ -18,7 +23,11 @@ namespace HotelApi.Employee.Controllers
             _config = config;
         }
 
-        [HttpPost]
+        [AllowAnonymous]
+        [HttpPost("/login")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
         public IActionResult login([FromBody] LoginRequestDto loginRequest)
         {
             try
@@ -27,7 +36,8 @@ namespace HotelApi.Employee.Controllers
                 clsEmployeeBuisness? employeeHolder = clsEmployeeBuisness.findEmployeeByUserNameAndPassword(loginRequest.userName, Util.hashPassword(loginRequest.password));
 
                 if (employeeHolder == null)
-                    return NotFound();
+                    return StatusCode(401);
+
 
                 string token = Util.generateJWt(_config, employeeHolder.personID);
 
@@ -37,7 +47,8 @@ namespace HotelApi.Employee.Controllers
                 {
                     case true:
                         {
-                            return Ok(token);
+
+                            return Ok(JsonSerializer.Serialize(new { tokenData = token }));
                         }
                     default:
                         {
@@ -47,48 +58,101 @@ namespace HotelApi.Employee.Controllers
             }
             catch (Exception eror)
             {
-                return StatusCode(500, eror.Message);
+                return StatusCode(500, "some thing wrong");
             }
         }
 
-        [HttpGet]
-        public IActionResult register([FromBody] RegisterRequestDto registerRequest)
+
+
+        [HttpPost("/update")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public IActionResult update([FromForm] RegisterRequestDto registerRequest)
         {
             try
             {
 
-                clsEmployeeBuisness employee = new clsEmployeeBuisness();
+                clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByUserNameAndPassword(registerRequest.userName, Util.hashPassword(registerRequest.password));
 
-                employee.userName = registerRequest.userName;
-                employee.password = Util.hashPassword(registerRequest.userName);
+                if (employee == null)
+                    return StatusCode(401);
                 employee.phone = registerRequest.phone;
                 employee.address = registerRequest.address;
-                employee.departmentID = registerRequest.departmentID;
-                employee.personID = registerRequest.personID;
-                employee.phone = registerRequest.phone;
-                employee.token = Util.generateJWt(_config, employee.personID);
 
-                if (employee.save())
+                employee.departmentID = clsDepartmentBuisness.findDepartmentByName(registerRequest.departmentName)?.id ?? 0;
+
+                if (employee.departmentID == 0)
+                    return StatusCode(404, "department not exist");
+
+                employee.personInfo.firstName = registerRequest.firstName;
+                employee.personInfo.lastName = registerRequest.lastName;
+
+                if (DateOnly.TryParse(registerRequest.brithDay, out DateOnly brithday))
                 {
-                    return Ok(employee.token);
-
+                    employee.personInfo.brithDay = new DateTime(brithday.Year, brithday.Month, brithday.Day);
                 }
 
-                return StatusCode(500, "Could not Create Employee");
 
+                if (registerRequest.brithDay == null)
+                    return StatusCode(400, "Invalide BrithDay");
 
+                string? fileName = clsFileHelper.saveImageLocaly(registerRequest.profileImage, clsFileHelper.enFileType.adminProfile);
 
+                if (fileName != null)
+                {
+                    employee.image = fileName;
+                }
 
+                employee.phone = registerRequest.phone;
+                employee.token = Util.generateJWt(_config, employee.personID);
+                employee.password = Util.hashPassword(registerRequest.newPassword);
+
+                if (employee.personInfo.save())
+                {
+
+                    if (employee.save())
+                    {
+                        return StatusCode(200, "done");
+                    }
+                }
+
+                return StatusCode(500, "Some Thing Wrong");
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
-
-
+                return StatusCode(500, "Some Thing Wrong");
             }
 
-
-            return Ok("nice");
         }
+
+
+        [HttpGet("/getData")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+
+        public IActionResult findEmployeeByToken()
+        {
+            try
+            {
+                string? token = HttpContext.Request.Headers["Authorization"];
+
+
+                clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByToken(token.Split(" ").Last());
+
+                if (employee == null)
+                    return StatusCode(401);
+
+                return Ok(EmployeeDataDto.convertBuisnessEmployeeToDto(employee));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "some thing wrong");
+            }
+        }
+
     }
 }

@@ -3,6 +3,8 @@ using System.Text;
 using HotelApi.Injuction;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,31 +21,43 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IConfig, IconfigImplement>();
 
 
-builder.Services.AddAuthorization();
+
+//auth
+
 builder.Services.AddAuthentication(
-    options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    }
+        JwtBearerDefaults.AuthenticationScheme
     )
-    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+    .AddJwtBearer(
         options =>
          {
-
              options.TokenValidationParameters = new TokenValidationParameters
              {
+                 ValidateIssuer = true,
                  ValidateIssuerSigningKey = true,
+                 ValidateLifetime = true,
                  ValidIssuer = builder.Configuration["Issuer"],
                  IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SecretKey"] ?? "")),
-                 ValidateIssuer = true,
                  ValidateAudience = false,
-                 ValidateLifetime = false,
                  ClockSkew = TimeSpan.Zero
              };
          }
          );
+
+
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("justReact",
+                 policy =>
+                 {
+
+                     policy.WithOrigins("http://localhost:5173")
+                     .AllowAnyHeader()
+                     .AllowAnyMethod()
+                     .AllowCredentials();
+                 });
+});
 
 var app = builder.Build();
 
@@ -55,6 +69,24 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
+
+// app.UseFileServer(new FileServerOptions()
+// {
+//     FileProvider = new PhysicalFileProvider(
+//         Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
+//     RequestPath = new PathString("/Images"),
+//     EnableDirectoryBrowsing = true
+// });
+app?.UseFileServer(new FileServerOptions()
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
+    RequestPath = new PathString("/Images"),
+    EnableDirectoryBrowsing = true,
+});
+
+
+app.UseCors("justReact");
 
 app.UseAuthentication();
 app.UseAuthorization();

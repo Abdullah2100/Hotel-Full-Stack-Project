@@ -8,7 +8,7 @@ namespace HotelData
     public class clsPeoplesData
     {
 
-        public static  string connectionUrl = clsConnectionOperation.connectionString["ConnectionStrings:connectionDefult"]??"";
+        public static string connectionUrl = clsConnectionOperation.connectionString["ConnectionStrings:connectionDefult"] ?? "";
 
         public static bool findPerson
             (
@@ -290,6 +290,42 @@ namespace HotelData
 
             return isBlock;
         }
+
+        public static bool isPersonExistByID(int id)
+        {
+            bool isBlock = false;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionUrl))
+                {
+                    conn.Open();
+                    string query = @"select found = 1 from Peoples where  personID = @id ";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+
+                        cmd.Parameters.AddWithValue("@id", id);
+
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                isBlock = (bool)reader.Read();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error is :" + ex.ToString());
+
+            }
+
+            return isBlock;
+        }
+
 
 
     }

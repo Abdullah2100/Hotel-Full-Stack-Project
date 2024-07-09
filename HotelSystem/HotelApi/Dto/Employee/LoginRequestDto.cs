@@ -19,8 +19,5 @@ namespace HotelApi.Dto
         [Required]
         public string password { get; set; }
 
-        [MaxLength(13)]
-        [Required]
-        public string phone { get; set; }
     }
 }

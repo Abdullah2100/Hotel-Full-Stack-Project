@@ -92,7 +92,7 @@ namespace HotelBuisness
         }
 
 
-        public static clsEmployeeBuisness findEmployeeByPhone(string phone)
+        public static clsEmployeeBuisness? findEmployeeByPhone(string phone)
         {
 
             int id = 0;
@@ -121,6 +121,50 @@ namespace HotelBuisness
             }
             return null;
         }
+
+
+        public static clsEmployeeBuisness? findEmployeeByToken(string token)
+        {
+
+            int id = 0;
+            string userName = "";
+            string password = "";
+            int departmentID = 0;
+            int personID = 0;
+            string address = "";
+            string image = "";
+            string phone = "";
+            bool isBlock = false;
+            try
+            {
+
+                if (clsEmployeeData.findEmployee(token, ref phone, ref id, ref userName, ref password, ref departmentID, ref personID, ref address, ref isBlock, ref image))
+                {
+                    return new clsEmployeeBuisness(
+                        enMode.update,
+                        id, userName,
+                        password,
+                        departmentID,
+                        personID,
+                        address,
+                        phone,
+                        image,
+                        token,
+                        isBlock
+                        );
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+
+
+
 
         public static clsEmployeeBuisness? findEmployeeByUserNameAndPassword(string userName, string password)
         {

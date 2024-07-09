@@ -11,3 +11,16 @@
 /home/abdullah/Desktop/c# Projects/HotelSystem/HotelData/obj/Debug/net8.0/HotelData.pdb
 /home/abdullah/Desktop/c# Projects/HotelSystem/HotelData/obj/Debug/net8.0/ref/HotelData.dll
 /home/abdullah/Desktop/c# Projects/HotelSystem/HotelData/obj/Debug/net8.0/HotelData.csproj.AssemblyReference.cache
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/bin/Debug/net8.0/HotelData.deps.json
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/bin/Debug/net8.0/HotelData.dll
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/bin/Debug/net8.0/HotelData.pdb
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/obj/Debug/net8.0/HotelData.csproj.AssemblyReference.cache
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/obj/Debug/net8.0/HotelData.GeneratedMSBuildEditorConfig.editorconfig
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/obj/Debug/net8.0/HotelData.AssemblyInfoInputs.cache
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/obj/Debug/net8.0/HotelData.AssemblyInfo.cs
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/obj/Debug/net8.0/HotelData.csproj.CoreCompileInputs.cache
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/obj/Debug/net8.0/HotelData.sourcelink.json
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/obj/Debug/net8.0/HotelData.dll
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/obj/Debug/net8.0/refint/HotelData.dll
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/obj/Debug/net8.0/HotelData.pdb
+/home/abdullah/Desktop/FullStackProjects/Hotel FullStack Project/HotelSystem/HotelData/obj/Debug/net8.0/ref/HotelData.dll
