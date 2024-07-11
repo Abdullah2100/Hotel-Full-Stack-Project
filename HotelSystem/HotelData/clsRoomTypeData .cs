@@ -24,7 +24,7 @@ namespace HotelData
                 using (SqlConnection conn = new SqlConnection(connectionUrl))
                 {
                     conn.Open();
-                    string query = @"select * from RoomTypes where roomTypeID = @id";
+                    string query = @"select top 1 * from RoomTypes where roomTypeID = @id";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -66,7 +66,7 @@ namespace HotelData
                 using (SqlConnection conn = new SqlConnection(connectionUrl))
                 {
                     conn.Open();
-                    string query = @"select * from RoomTypes where name = @name";
+                    string query = @"select top 1 * from RoomTypes where name = @name";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -223,7 +223,7 @@ namespace HotelData
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string qery = @"select * from RoomTypes";
+                    string qery = @"select * from RoomTypes order by roomTypeID desc";
 
                     using (SqlCommand cmd = new SqlCommand(qery, con))
                     {
@@ -310,7 +310,6 @@ namespace HotelData
             }
             return isBlock;
         }
-
 
 
     }

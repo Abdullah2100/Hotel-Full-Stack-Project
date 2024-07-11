@@ -27,7 +27,7 @@ namespace HotelData
                 using (SqlConnection conn = new SqlConnection(connectionUrl))
                 {
                     conn.Open();
-                    string query = @"select * from Peoples where personID = @personID";
+                    string query = @"select top 1 * from Peoples where personID = @personID";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -77,7 +77,7 @@ namespace HotelData
                 using (SqlConnection conn = new SqlConnection(connectionUrl))
                 {
                     conn.Open();
-                    string query = @"select * from Peoples where nationalNo = @nationalNo";
+                    string query = @"select top 1 * from Peoples where nationalNo = @nationalNo";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {

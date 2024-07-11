@@ -33,7 +33,7 @@ namespace HotelData
                 using (SqlConnection conn = new SqlConnection(connectionUrl))
                 {
                     conn.Open();
-                    string query = @"select * from Departments where departmentID = @id";
+                    string query = @"select top 1 * from Departments where departmentID = @id";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -75,7 +75,7 @@ namespace HotelData
                 using (SqlConnection conn = new SqlConnection(connectionUrl))
                 {
                     conn.Open();
-                    string query = @"select * from Departments where name = @name";
+                    string query = @"select top 1 * from Departments where name = @name";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -232,7 +232,7 @@ namespace HotelData
                 using (SqlConnection con = new SqlConnection(connectionUrl))
                 {
                     con.Open();
-                    string qery = @"select * from Departments";
+                    string qery = @"select * from Departments order by departmentID desc";
 
                     using (SqlCommand cmd = new SqlCommand(qery, con))
                     {
