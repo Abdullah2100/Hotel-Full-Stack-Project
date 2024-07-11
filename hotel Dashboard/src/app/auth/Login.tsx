@@ -11,7 +11,7 @@ import AuthServices from "../../services/Adminservices"
 import toast from 'react-hot-toast'
 import localizationService from '../../services/localizationService'
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
-import Util from '../../global/Utile'
+import IErrorType from '../../types/IErrorType'
 
 const Login = () => {
 
@@ -34,13 +34,29 @@ const Login = () => {
     const { login } = AuthServices();
     let loginRequestData = new clsLoginRequest(userName, password);
 
+    const handleErrorReponse = (error: any) => {
+        const errorBody = (error.response) as IErrorType;
+
+        let errorMessage = errorBody?.data ?? "";
+
+        if (errorBody === undefined)
+            errorMessage = error.message;
+        // console.log(errorMessage);
+
+        toast.error(`${errorMessage}`, {
+            position: "bottom-right",
+        })
+
+
+    }
+
 
     const mutation = useMutation(
 
         {
             mutationFn: (data: clsLoginRequest) => login(data),
             onError: (erro: any) => {
-                Util.handleErrorReponse(erro)
+                handleErrorReponse(erro)
 
 
 

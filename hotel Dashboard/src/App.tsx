@@ -7,6 +7,7 @@ import Login from './app/auth/Login'
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
 import Department from './app/app/Department'
+import RoomType from './app/app/RoomType'
 // import Dashboard from './pages/dashboard/Dashboard'
 function App() {
   const isAuthenticated = useIsAuthenticated();
@@ -23,6 +24,7 @@ function App() {
           <Route path='/profile' element={<Profile />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/department' element={<Department />} />
+          <Route path='/roomType' element={<RoomType />} />
         </Route>
 
         <Route path="/auth/login" element={

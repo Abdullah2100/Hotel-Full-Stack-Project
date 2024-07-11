@@ -10,10 +10,10 @@ import toast from "react-hot-toast";
 import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import { useNavigate } from "react-router-dom";
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
-import Util from "../../global/Utile";
 import enState from "../../types/enState";
 import ProgressBar from "../../components/ui/ProgressBar";
 import clsDepartment from "../../model/clsDepartment";
+import IErrorType from "../../types/IErrorType";
 
 
 const Department = () => {
@@ -27,24 +27,54 @@ const Department = () => {
 
 
 
-    // const { isRight } = localizationService();
     const {
         createDepartment,
         departmentState,
-        getDepartment, depatmentItems,
+        getDepartment,
+        depatmentItems,
         deleteDepartment,
-        updateDepartment
+        updateDepartment,
+        addToDepartments,
+        changeDeparmtmentState
     } = DepartmentServices()
-    useEffect(() => {
-        getDepartment(authHeader ?? "");
-    }, [])
 
+
+    const handleErrorReponse = (error: any) => {
+        const errorBody = (error.response) as IErrorType;
+
+        let errorMessage = errorBody?.data ?? "";
+
+        if (errorBody === undefined)
+            errorMessage = error.message;
+
+        toast.error(`${errorMessage}`, {
+            position: "bottom-right",
+        })
+
+        if (errorBody.status === 401) {
+            signOut();
+            navigate('/')
+        }
+    }
+
+
+    useEffect(() => {
+        getDepartment(authHeader ?? "").catch((erro) => {
+            handleErrorReponse(erro);
+            changeDeparmtmentState(enState.error)
+        }).then((data) => {
+            const departments = data as clsDepartment[];
+            addToDepartments(departments)
+            changeDeparmtmentState(enState.complate)
+        });
+    }, [])
 
     const addDeparmtmentHolder = useMutation({
         mutationFn: (name: string) => createDepartment(name, authHeader ?? ""),
         onError: ((error: any) => {
 
-            Util.handleErrorReponse(error, navigate, signOut())
+            handleErrorReponse(error)
+
         }),
         onSuccess: (() => {
 
@@ -59,7 +89,7 @@ const Department = () => {
         mutationFn: (id: number) => deleteDepartment(id, authHeader ?? ""),
         onError: ((error: any) => {
 
-            Util.handleErrorReponse(error, navigate, signOut())
+            handleErrorReponse(error)
         }),
         onSuccess: (() => {
 
@@ -74,7 +104,7 @@ const Department = () => {
         mutationFn: (data: clsDepartment) => updateDepartment(data, authHeader ?? ""),
         onError: ((error: any) => {
 
-            Util.handleErrorReponse(error, navigate, signOut())
+            handleErrorReponse(error)
         }),
         onSuccess: (() => {
 

@@ -13,11 +13,11 @@ using Microsoft.Extensions.Logging;
 namespace HotelApi.Controllers
 {
     [Route("[controller]")]
-    public class DepartmentController : Controller
+    public class DepartmentsController : Controller
     {
-        private readonly ILogger<DepartmentController> _logger;
+        private readonly ILogger<DepartmentsController> _logger;
 
-        public DepartmentController(ILogger<DepartmentController> logger)
+        public DepartmentsController(ILogger<DepartmentsController> logger)
         {
             _logger = logger;
         }
@@ -26,8 +26,8 @@ namespace HotelApi.Controllers
         [Authorize]
         [HttpGet("/department/all")]
         [ProducesResponseType(200)]
+        [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-
         public IActionResult getDepartments()
         {
             try
@@ -81,7 +81,7 @@ namespace HotelApi.Controllers
 
         [Authorize]
         [HttpPut("/department")]
-        [ProducesResponseType(201)]
+        [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(406)]
         [ProducesResponseType(500)]
@@ -102,7 +102,7 @@ namespace HotelApi.Controllers
 
                 depatment.save();
 
-                return StatusCode(201, "add seccsfuly");
+                return Ok("add seccsfuly");
             }
             catch (Exception ex)
             {
@@ -116,11 +116,11 @@ namespace HotelApi.Controllers
 
         [Authorize]
         [HttpDelete("/department/{id:int}")]
-        [ProducesResponseType(201)]
+        [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public IActionResult deleteDepartment(int id, string name)
+        public IActionResult deleteDepartment(int id)
         {
             try
             {
@@ -130,15 +130,14 @@ namespace HotelApi.Controllers
                 if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
                     return StatusCode(401);
 
-                clsDepartmentBuisness depatment = clsDepartmentBuisness.findDepartmentByID(id);
-                if (depatment == null)
+                if (!clsDepartmentBuisness.isDepartmentExistByID(id))
                     return NotFound();
 
-                depatment.name = name;
 
-                if (depatment.save())
+
+                if (clsDepartmentBuisness.deleteDepartment(id))
                 {
-                    return StatusCode(200, "update  seccsfuly");
+                    return Ok("update  seccsfuly");
                 }
 
                 return StatusCode(500, "some thing wrong");

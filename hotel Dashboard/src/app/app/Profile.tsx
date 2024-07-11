@@ -18,7 +18,7 @@ import useSignOut from 'react-auth-kit/hooks/useSignOut';
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import ProgressBar from "../../components/ui/ProgressBar";
 import SlidBarAndHeaderHolder from "../../components/layout/SlidBarAndHeaderHolder";
-import Util from "../../global/Utile";
+import IErrorType from "../../types/IErrorType";
 
 const Profile = () => {
 
@@ -93,25 +93,35 @@ const Profile = () => {
     }
   }
 
+
+  const handleErrorReponse = (error: any) => {
+    const errorBody = (error.response) as IErrorType;
+
+    let errorMessage = errorBody?.data ?? "";
+
+    if (errorBody === undefined)
+      errorMessage = error.message;
+    // console.log(errorMessage);
+
+    toast.error(`${errorMessage}`, {
+      position: "bottom-right",
+    })
+
+    if (errorBody.status === 401) {
+
+      signOut();
+      navigate('/')
+    }
+    // return;
+  }
+
+
   const updateData = useMutation(
     {
       mutationFn: (data: FormData) => updateAdminData(data, authHeader ?? ""),
       onError: ((error: any) => {
-        // const errorBody = (error.response) as IErrorType;
-        // console.log(errorBody.data);
 
-        // toast.error(`${errorBody.data}`, {
-        //   position: "bottom-right",
-        // })
-
-        // if (errorBody.status === 401) {
-        // navigate("/auth/login",
-        //   {
-        //     replace: false
-        //   });
-        //   return signOut();
-        // }
-        Util.handleErrorReponse(error, navigate, signOut())
+        handleErrorReponse(error)
 
       }),
       onSuccess: (() => {
