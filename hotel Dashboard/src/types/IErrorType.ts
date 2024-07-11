@@ -1,6 +1,6 @@
-interface IErrorType{
-    message:string;
-    statusCode:number
+interface IErrorType {
+    data: string;
+    status: number
 }
 
 export default IErrorType;

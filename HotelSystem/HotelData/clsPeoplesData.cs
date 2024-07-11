@@ -110,7 +110,6 @@ namespace HotelData
             return isFound;
         }
 
-
         public static int createPerson
         (
          string firstName,
@@ -159,7 +158,6 @@ namespace HotelData
 
             return personID;
         }
-
 
         public static bool updatePerson
             (
@@ -213,13 +211,6 @@ namespace HotelData
             return isUpdate;
         }
 
-
-
-
-
-
-
-
         public static bool deletePersonByID(int personID)
         {
             bool isDeleted = false;
@@ -253,8 +244,6 @@ namespace HotelData
 
             return isDeleted;
         }
-
-
 
         public static bool isPersonExistByNationalNo(string nationalNo)
         {

@@ -16,7 +16,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-
 //injuction 
 builder.Services.AddSingleton<IConfig, IconfigImplement>();
 
@@ -25,13 +24,18 @@ builder.Services.AddSingleton<IConfig, IconfigImplement>();
 //auth
 
 builder.Services.AddAuthentication(
-        JwtBearerDefaults.AuthenticationScheme
+      option =>
+      {
+          option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+          option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+      }
     )
     .AddJwtBearer(
         options =>
          {
              options.TokenValidationParameters = new TokenValidationParameters
              {
+                 SaveSigninToken = false,
                  ValidateIssuer = true,
                  ValidateIssuerSigningKey = true,
                  ValidateLifetime = true,
@@ -42,7 +46,7 @@ builder.Services.AddAuthentication(
              };
          }
          );
-
+builder.Services.AddAuthorization();
 
 
 

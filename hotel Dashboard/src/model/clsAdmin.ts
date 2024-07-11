@@ -15,7 +15,7 @@ class clsAdmin {
     constructor() {
         this.id = 0;
         this.userName = "";
-        this.department = new clsDepartment;
+        this.department = new clsDepartment(0, '');
         this.person = new clsPerson;
         this.address = "";
         this.phone = "";

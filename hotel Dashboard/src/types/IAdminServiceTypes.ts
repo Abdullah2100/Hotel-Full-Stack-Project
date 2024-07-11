@@ -1,5 +1,5 @@
 import clsLoginRequest from "../model/clsLoginRequest";
-import enAuthReqst from "./enAuthReqst";
+import enAuthReqst from "./enState";
 
 interface IAdminServiceTypes {
     authRequestState: enAuthReqst,

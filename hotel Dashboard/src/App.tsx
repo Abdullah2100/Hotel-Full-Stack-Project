@@ -6,6 +6,7 @@ import Profile from './app/app/Profile'
 import Login from './app/auth/Login'
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
+import Department from './app/app/Department'
 // import Dashboard from './pages/dashboard/Dashboard'
 function App() {
   const isAuthenticated = useIsAuthenticated();
@@ -21,6 +22,7 @@ function App() {
         <Route element={<AuthOutlet fallbackPath='/auth/login' />}>
           <Route path='/profile' element={<Profile />} />
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/department' element={<Department />} />
         </Route>
 
         <Route path="/auth/login" element={

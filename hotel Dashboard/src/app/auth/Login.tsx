@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prefer-const */
 
 import { useState } from 'react'
@@ -7,10 +8,10 @@ import '../../App.css'
 import clsLoginRequest from '../../model/clsLoginRequest'
 import { useMutation } from 'react-query'
 import AuthServices from "../../services/Adminservices"
-import IErrorType from '../../types/IErrorType'
 import toast from 'react-hot-toast'
 import localizationService from '../../services/localizationService'
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
+import Util from '../../global/Utile'
 
 const Login = () => {
 
@@ -38,12 +39,11 @@ const Login = () => {
 
         {
             mutationFn: (data: clsLoginRequest) => login(data),
-            onError: (erro) => {
-                let errorBody = erro as IErrorType;
-                // alert(errorBody.message)
-                toast.error(`${errorBody.message}`, {
+            onError: (erro: any) => {
+                Util.handleErrorReponse(erro)
 
-                })
+
+
             }
             ,
             onSuccess: (seecc) => {
@@ -131,7 +131,7 @@ const Login = () => {
 
                         className='w-full bg-orange-600 h-14 rounded-md mt-5'>
                         {
-                            // authRequestState == enAuthReqst.loading ?
+                            // authRequestState == enState.loading ?
                             //     <ClipLoader
                             //         className='h-12'
                             //         color='#ffffff'

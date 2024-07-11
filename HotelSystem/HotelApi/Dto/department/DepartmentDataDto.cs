@@ -7,7 +7,7 @@ namespace HotelApi.Dto.Employee
 {
     public class DepartmentDataDto
     {
-       
+
         public int id { get; set; }
         public string name { get; set; }
 
@@ -16,6 +16,6 @@ namespace HotelApi.Dto.Employee
             id = 0;
             name = "";
         }
- 
+
     }
 }

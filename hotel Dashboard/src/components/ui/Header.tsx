@@ -2,121 +2,136 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { useEffect, useRef, useState } from "react"
-import DropDownMenu from "./DropDownMenu";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
+import DropDownMenu from "../layout/DropDownMenu";
 import { useNavigate } from "react-router-dom";
 import localizationService from "../../services/localizationService";
 import clsAdminData from "../../global/clsAdminData";
+import '../../App.css'
 
 
 
 
-const Header = () => {
-    const { isRight } = localizationService();
+const Header =
+    (props: { changeDrawerState: Dispatch<SetStateAction<boolean>>, state: boolean }) => {
+        const { isRight } = localizationService();
 
 
-    const navigation = useNavigate();
-    const [isShowMenu, changeMenuState] = useState(false);
-    let btnRef = useRef<HTMLButtonElement>(null);
-    const dropDownItemRef = useRef<HTMLButtonElement>(null);
-
-
-
-    const handleMenuClick = () => {
-        changeMenuState(true)
-    };
-
-
-    // handleCloseMenu();
-
-    useEffect(() => {
-
-        if (isShowMenu === true) {
-
-            const handleChangeOnMenu = (e: Event) => {
-                let eventNode = e?.target as Node;
-                if (
-                    (((btnRef.current?.contains(eventNode)) || (dropDownItemRef.current?.contains(eventNode))) && isShowMenu === true)
-                ) {
-
-                    console.log("result is first")
-                }
-                else {
-                    console.log("result is second")
-                    changeMenuState(false)
-                }
-            }
-            document.addEventListener("mousedown", handleChangeOnMenu)
-
-            return () => {
-                document.removeEventListener('mousedown', handleChangeOnMenu)
-            }
-        }
-    })
+        const navigation = useNavigate();
+        const [isShowMenu, changeMenuState] = useState(false);
+        let btnRef = useRef<HTMLButtonElement>(null);
+        const dropDownItemRef = useRef<HTMLButtonElement>(null);
+        // const headerRef = useRef<HTMLDivElement>(null)
 
 
 
+        const handleMenuClick = () => {
+            changeMenuState(true)
+        };
 
 
-    return (
+        // handleCloseMenu();
 
-        <div dir={isRight ? "rtl" : "ltr"}
-            className='flex items-center h-14 w-[100%] bg-white px-4 justify-between  border-b-[1px] border-gray-200 fixed top-0 z-10'>
+        useEffect(() => {
 
-            <section className="right flex items-center  ">
+            //handling the menu event 
+            console.log(props.state)
 
-                <button
-                    onClick={
-                        () => navigation("/dashboard")
+            if (isShowMenu === true) {
+
+                const handleChangeOnMenu = (e: Event) => {
+                    let eventNode = e?.target as Node;
+                    if (
+                        (((btnRef.current?.contains(eventNode)) || (dropDownItemRef.current?.contains(eventNode))) && isShowMenu === true)
+                    ) {
+
+                        console.log("result is first")
                     }
-                >
+                    else {
+                        console.log("result is second")
+                        changeMenuState(false)
+                    }
+                }
+                document.addEventListener("mousedown", handleChangeOnMenu)
 
-                    <img src="/logo.png" alt="logo" className=' w-12' />
-                </button>
+                return () => {
+                    document.removeEventListener('mousedown', handleChangeOnMenu)
+                }
+            }
+        })
 
-                <i className="fa-solid fa-bars text-2xl text-gray-500 mx-1"></i>
-                <div className="search flex  items-center mx-4 text-gray-500">
-                    <i className="fa-solid fa-magnifying-glass text-sm"></i>
-                    <p className=' mx-1'>بحث</p>
-                </div>
 
-            </section>
 
-            <nav className="">
-                <div className="roundProfile h-8 w-8 bg-orange-600 rounded-full flex justify-center items-center pb-0">
+
+
+        return (
+
+            <div
+                dir={isRight ? "rtl" : "ltr"}
+                className={` flex items-center h-14 ${props.state === true ? 'w-[100%]' : 'md:w-[calc(100%-70px)]'} w-[100%]  bg-white px-4 justify-between  border-b-[1px] border-gray-200 fixed top-0 z-10 transition-all ease-out`}>
+
+                <section className="right flex items-center  ">
+
                     <button
-                        ref={btnRef}
-                        id="dropBtn"
-                        // onBlur={handleMenuClose}
-
                         onClick={
-                            handleMenuClick
-                            // handleMenuClick
-
+                            () => navigation("/dashboard")
                         }
                     >
-                        <img src={clsAdminData.adminDataHolder?.image?.length > 0 ? clsAdminData.adminDataHolder.image : "/logo.png"}
-                            alt="profile"
-                            className="w-6 h-6 rounded-full" />
+
+                        <img src="/logo.png" alt="logo" className=' w-12' />
                     </button>
+                    {/* menu bar */}
+                    <button
+                        className="md:hidden flex"
+                        onClick={() => { props.changeDrawerState(true) }}>
+                        <i className="fa-solid fa-bars text-2xl text-gray-500 mx-1 "></i>
+                    </button>
+                    <div className="search flex  items-center mx-4 text-gray-500">
+                        <i className="fa-solid fa-magnifying-glass text-sm"></i>
+                        <p className=' mx-1'>بحث</p>
+                    </div>
 
-                    {isShowMenu &&
-                        <DropDownMenu
-                            name=""
-                            ref={dropDownItemRef}
+                </section>
 
-                        // {dropDownItemRef}
-                        />
+                <nav className="">
+                    <div className="roundProfile h-8 w-8 bg-orange-600 rounded-full flex justify-center items-center pb-0">
+                        <button
+                            ref={btnRef}
+                            id="dropBtn"
+                            // onBlur={handleMenuClose}
+
+                            onClick={
+                                handleMenuClick
+                                // handleMenuClick
+
+                            }
+                        >
+                            <img src={clsAdminData.adminDataHolder?.image?.length > 0 ? clsAdminData.adminDataHolder.image : "/logo.png"}
+                                alt="profile"
+                                className="w-6 h-6 rounded-full" />
+                        </button>
+
+                        {isShowMenu &&
+                            <DropDownMenu
+                                name=""
+                                ref={dropDownItemRef}
+
+                            // {dropDownItemRef}
+                            />
 
 
-                    }
-                </div>
+                        }
+                    </div>
 
-            </nav>
+                </nav>
 
-        </div>
-    )
-}
+            </div>
+        )
+
+
+
+    }
+
 
 Header.propTypes = {}
 

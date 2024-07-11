@@ -13,7 +13,6 @@ namespace HotelApi.Employee.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class EmployeesController : ControllerBase
     {
 
@@ -24,7 +23,7 @@ namespace HotelApi.Employee.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("/login")]
+        [HttpPost("/employee/login")]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
@@ -63,17 +62,22 @@ namespace HotelApi.Employee.Controllers
         }
 
 
-
-        [HttpPost("/update")]
+        [Authorize]
+        [HttpPut("/employee")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public IActionResult update([FromForm] RegisterRequestDto registerRequest)
+        public IActionResult updateEmployee([FromForm] RegisterRequestDto registerRequest)
         {
             try
             {
+                string? token = HttpContext.Request.Headers["Authorization"];
+
+                if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
+                    return StatusCode(401);
+
 
                 clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByUserNameAndPassword(registerRequest.userName, Util.hashPassword(registerRequest.password));
 
@@ -128,13 +132,12 @@ namespace HotelApi.Employee.Controllers
 
         }
 
-
-        [HttpGet("/getData")]
+        [Authorize]
+        [HttpGet("/employee/")]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-
-        public IActionResult findEmployeeByToken()
+        public IActionResult getEmployeeDataByToken()
         {
             try
             {

@@ -1,9 +1,9 @@
 class clsDepartment {
     id: number;
     name: string;
-    constructor() {
-        this.id = 0;
-        this.name = "";
+    constructor(id: number, name: string) {
+        this.id = id;
+        this.name = name;
     }
 
 }

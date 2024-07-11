@@ -2,33 +2,34 @@
 /* eslint-disable prefer-const */
 import { create } from 'zustand';
 import clsLoginRequest from '../model/clsLoginRequest';
-import enAuthReqst from '../types/enAuthReqst';
+import enState from '../types/enState';
 import axios from 'axios';
 import AdminServiceTypes from '../types/IAdminServiceTypes';
 import clsAdminData from '../global/clsAdminData';
 const Adminservices = create<AdminServiceTypes>((set) => ({
 
-    authRequestState: enAuthReqst.none,
+    authRequestState: enState.none,
 
     login: async (reqestData: clsLoginRequest): Promise<string> => {
-        set({ authRequestState: enAuthReqst.loading });
+        set({ authRequestState: enState.loading });
         console.log()
 
         const result = await axios.
             post(
-                `${process.env.apiUrl}/login`, reqestData,
+                `${process.env.apiUrl}/employee/login`, reqestData,
                 {
                     headers: {
                         "Content-type": "application/json; charset=UTF-8"
+                        , "Access-Control-Allow-Origin": "*"
                     }
                 }
             )
 
         if (result.status != 200) {
-            set({ authRequestState: enAuthReqst.error });
+            set({ authRequestState: enState.error });
         }
         else {
-            set({ authRequestState: enAuthReqst.complate });
+            set({ authRequestState: enState.complate });
         }
         const data = await result.data.tokenData;
         return data;
@@ -36,7 +37,7 @@ const Adminservices = create<AdminServiceTypes>((set) => ({
 
     getAdminData: async (token: string): Promise<void> => {
         const request = await axios.get(
-            `${process.env.apiUrl}/getData`, {
+            `${process.env.apiUrl}/employee`, {
             headers: {
                 "Content-type": "application/json;",
                 'Authorization': token
@@ -52,12 +53,12 @@ const Adminservices = create<AdminServiceTypes>((set) => ({
     ,
     updateAdminData: async (adminData: FormData, token: string): Promise<string> => {
 
-        set({ authRequestState: enAuthReqst.loading });
+        set({ authRequestState: enState.loading });
         console.log()
 
         const result = await axios.
-            post(
-                `${process.env.apiUrl}/update`, adminData,
+            put(
+                `${process.env.apiUrl}/employee`, adminData,
                 {
                     headers: {
                         "Content-type": "multipart/form-data"
@@ -70,10 +71,10 @@ const Adminservices = create<AdminServiceTypes>((set) => ({
             )
 
         if (result.status != 200) {
-            set({ authRequestState: enAuthReqst.error });
+            set({ authRequestState: enState.error });
         }
         else {
-            set({ authRequestState: enAuthReqst.complate });
+            set({ authRequestState: enState.complate });
         }
 
         return result.data;

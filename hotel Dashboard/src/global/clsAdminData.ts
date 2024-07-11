@@ -10,7 +10,7 @@ class clsAdminData {
 
 
     static adminLineToObject(adminDataHolder: any) {
-        let deparmtent = new clsDepartment;
+        let deparmtent = new clsDepartment(0, '');
         deparmtent.id = adminDataHolder.departmentData.id;
         deparmtent.name = adminDataHolder.departmentData.name;
         let personInfo = new clsPerson;

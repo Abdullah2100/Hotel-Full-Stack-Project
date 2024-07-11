@@ -17,23 +17,26 @@ namespace HotelApi.Global
 
         public static string generateJWt(IConfig config, int personID)
         {
+            var handler = new JwtSecurityTokenHandler();
 
             var securityKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(config.configuration["SecretKey"] ?? "")
                 );
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var ci = new List<Claim>
+            var ci = new ClaimsIdentity();
+            ci.AddClaim(
+                 new Claim(ClaimTypes.NameIdentifier, personID.ToString())
+            );
+            var token = new SecurityTokenDescriptor
             {
-                new Claim(ClaimTypes.NameIdentifier, personID.ToString())
-            };
-            var token = new JwtSecurityToken(
 
-                claims: ci,
-                issuer: config.configuration["Issuer"],
-                expires: DateTime.Now.AddHours(5),
-                signingCredentials: credentials
-                );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                Subject = ci,
+                Issuer = config.configuration["Issuer"],
+                Expires = DateTime.Now.AddHours(5),
+                SigningCredentials = credentials
+            };
+            var tokenHolder = handler.CreateToken(token);
+            return handler.WriteToken(tokenHolder);
         }
 
 

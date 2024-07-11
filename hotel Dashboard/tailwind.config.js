@@ -8,7 +8,8 @@ export default {
     extend: {
       backgroundColor:{
         bodyColor:"#e5e7eb",
-        primeColor:"#fa7316"
+        primeColor:"#fa7316",
+        sideBarButtonBackground:"#fff1e7"
       },
       textColor:{
         textColor:"#e5e7eb"
