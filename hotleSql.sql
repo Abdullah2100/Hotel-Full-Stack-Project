@@ -22,6 +22,7 @@ departmentID int identity(1,1) primary key,
 name  nvarchar(50) unique
 )
 
+insert into Departments(name)values('Room Service')
 
 go
 create table Employees(
@@ -41,6 +42,37 @@ create table RoomTypes(
 roomTypeID int identity(1,1) primary key,
 name  nvarchar(50) unique
 )
+
+go
+create table Rooms(
+roomID int identity(1,1) primary key,
+roomTypeID int references RoomTypes(roomTypeID),
+capacity SMALLINT not null,
+bedNumber SMALLINT not null,
+pricePerDay float not null,
+--state SMALLINT not null,
+addBy int references Employees(employeeID),
+createdDate Datetime default getDate(),
+floorNumber smallint not null,
+description nvarchar(max),
+title nvarchar(20),
+ isRent bit DEFAULT 0
+)
+
+go 
+create table RoomImages(
+  roomImageID int identity(1,1) PRIMARY KEY,
+  roomID int REFERENCES Rooms(roomID),
+  imagePath nvarchar(max) 
+)
+
+  go
+
+
+
+from Rooms r
+inner join RoomTypes rt on r.roomTypeID = rt.roomTypeID
+inner join Employees e on r.addBy = e.employeeID
 
 
 /*
@@ -66,21 +98,6 @@ addBy int references Employees(employeeID),
 isBlock bit default 0,
 personID int references Peoples(personID)
 )
-
-
-go
-create table Rooms(
-roomID int identity(1,1) primary key,
-roomTypeID int references RoomTypes(roomTypeID),
-capacity tinyint not null,
-bedNumber tinyint not null,
-pricePerDay float not null,
-state tinyint not null,
-addBy int references Employees(employeeID),
-createdDate Datetime default getDate(),
-floorNumber smallint not null 
-)
-
 
 
 go
@@ -112,23 +129,7 @@ as
   return @FullName
   end
 
-  go
-create view  room_view as 
-select 
-r.roomID ,
-(select name from RoomTypes where roomTypeID = r.roomTypeID) as roomType,
-r.capacity ,
-r.bedNumber ,
-r.pricePerDay , 
-case 
-when  r.state =0 then 'None'
-when  r.state =1 then 'is booking'
-when  r.state = 2 then 'is Cleaning'
-else 'out of services'
-end as state,
-r.createdDate,
-dbo.getEmployeeNameByID(addBy) as addBy
-from Rooms r
+
 
 
 

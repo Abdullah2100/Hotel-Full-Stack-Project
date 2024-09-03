@@ -131,7 +131,7 @@ namespace HotelApi.Controllers
 
 
                 if (!clsRoomTypeBuisness.isRoomTypeExistByID(id))
-                    return NotFound();
+                    return StatusCode(404, "room Type not found");
 
 
                 if (clsRoomTypeBuisness.deleteRoomType(id))

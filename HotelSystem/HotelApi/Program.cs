@@ -28,6 +28,7 @@ builder.Services.AddAuthentication(
       {
           option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
           option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+          option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
       }
     )
     .AddJwtBearer(
@@ -35,7 +36,6 @@ builder.Services.AddAuthentication(
          {
              options.TokenValidationParameters = new TokenValidationParameters
              {
-                 SaveSigninToken = false,
                  ValidateIssuer = true,
                  ValidateIssuerSigningKey = true,
                  ValidateLifetime = true,
@@ -55,7 +55,6 @@ builder.Services.AddCors(options =>
     options.AddPolicy("justReact",
                  policy =>
                  {
-
                      policy.WithOrigins("http://localhost:5173")
                      .AllowAnyHeader()
                      .AllowAnyMethod()
@@ -81,6 +80,7 @@ if (app.Environment.IsDevelopment())
 //     RequestPath = new PathString("/Images"),
 //     EnableDirectoryBrowsing = true
 // });
+
 app?.UseFileServer(new FileServerOptions()
 {
     FileProvider = new PhysicalFileProvider(

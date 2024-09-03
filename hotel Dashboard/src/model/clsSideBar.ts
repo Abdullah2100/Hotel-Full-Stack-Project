@@ -1,4 +1,4 @@
-class clsSideBarType {
+class clsSideBar {
     index: number;
     imageName: string;
     navigationPage: string;
@@ -10,4 +10,4 @@ class clsSideBarType {
         this.navigationPage = navDestination;
     }
 }
-export default clsSideBarType;
+export default clsSideBar;

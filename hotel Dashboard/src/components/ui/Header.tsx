@@ -6,7 +6,6 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import DropDownMenu from "../layout/DropDownMenu";
 import { useNavigate } from "react-router-dom";
 import localizationService from "../../services/localizationService";
-import clsAdminData from "../../global/clsAdminData";
 import '../../App.css'
 
 
@@ -35,7 +34,7 @@ const Header =
         useEffect(() => {
 
             //handling the menu event 
-            console.log(props.state)
+            // console.log(props.state)
 
             if (isShowMenu === true) {
 
@@ -47,10 +46,10 @@ const Header =
 
                         console.log("result is first")
                     }
-                    else {
-                        console.log("result is second")
-                        changeMenuState(false)
-                    }
+                    // else {
+                    //     console.log("result is second")
+                    //     changeMenuState(false)
+                    // }
                 }
                 document.addEventListener("mousedown", handleChangeOnMenu)
 
@@ -58,6 +57,7 @@ const Header =
                     document.removeEventListener('mousedown', handleChangeOnMenu)
                 }
             }
+
         })
 
 
@@ -68,7 +68,10 @@ const Header =
 
             <div
                 dir={isRight ? "rtl" : "ltr"}
-                className={` flex items-center h-14 ${props.state === true ? 'w-[100%]' : 'md:w-[calc(100%-70px)]'} w-[100%]  bg-white px-4 justify-between  border-b-[1px] border-gray-200 fixed top-0 z-10 transition-all ease-out`}>
+                //  className={`flex items-center h-14 ${props.state === true ? 'w-screen' : 'md:w-[calc(100%-70px)]'} w-[100%]  bg-white px-4 justify-between  border-b-[1px] border-gray-200 fixed top-0 z-10 transition-all ease-out`}
+                className={`flex items-center h-14 ${props.state === true ? 'w-screen' : 'md:w-[calc(100%-60px)]'} w-screen  bg-white px-5 justify-between  border-b-[1px] border-gray-200 fixed top-0 z-10 transition-all ease-out`}
+
+            >
 
                 <section className="right flex items-center  ">
 
@@ -94,7 +97,7 @@ const Header =
                 </section>
 
                 <nav className="">
-                    <div className="roundProfile h-8 w-8 bg-orange-600 rounded-full flex justify-center items-center pb-0">
+                    <div className="roundProfile h-8 w-8 bg-orange-600 rounded-full flex justify-center items-center pb-0 me-5">
                         <button
                             ref={btnRef}
                             id="dropBtn"
@@ -106,7 +109,7 @@ const Header =
 
                             }
                         >
-                            <img src={clsAdminData.adminDataHolder?.image?.length > 0 ? clsAdminData.adminDataHolder.image : "/logo.png"}
+                            <img src={"/logo.png"}
                                 alt="profile"
                                 className="w-6 h-6 rounded-full" />
                         </button>

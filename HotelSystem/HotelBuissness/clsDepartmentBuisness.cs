@@ -36,7 +36,7 @@ namespace HotelBuisness
             this.name = name;
         }
 
-        public static clsDepartmentBuisness findDepartmentByID(int id)
+        public static clsDepartmentBuisness? findDepartmentByID(int id)
         {
             string name = "";
             if (clsDepartmentData.findDepartment(id, ref name))
@@ -46,7 +46,7 @@ namespace HotelBuisness
             return null;
         }
 
-        public static clsDepartmentBuisness findDepartmentByName(string name)
+        public static clsDepartmentBuisness? findDepartmentByName(string name)
         {
             int id = 0;
             if (clsDepartmentData.findDepartment(name, ref id))
@@ -91,14 +91,15 @@ namespace HotelBuisness
             return false;
         }
 
-        public static List<clsDepartmentBuisness> getDepartments()
+        public static List<clsDepartmentBuisness>? getDepartments()
         {
 
             try
             {
-                return clsDepartmentData
+                var departments = clsDepartmentData
                 .getDepartments()
-                .AsEnumerable()
+                .AsEnumerable();
+                return departments.Count() == 0 ? null : departments
                 .Select(e => convertInlineToObject(e))
                 .ToList();
             }

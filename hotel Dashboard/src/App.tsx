@@ -8,7 +8,9 @@ import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
 import Department from './app/app/Department'
 import RoomType from './app/app/RoomType'
-// import Dashboard from './pages/dashboard/Dashboard'
+import Room from './app/app/Room'
+import AddOrUpdateRoom from './app/app/AddOrUpdateRoom'
+import NotFoundPage from './components/ui/NotFoundPage'
 function App() {
   const isAuthenticated = useIsAuthenticated();
   return (
@@ -17,7 +19,7 @@ function App() {
     <BrowserRouter>
       <Routes >
 
-        <Route path='*' element={<Navigate to="/dashboard" />} />
+        <Route path='/' element={<Navigate to="/dashboard" />} />
 
 
         <Route element={<AuthOutlet fallbackPath='/auth/login' />}>
@@ -25,6 +27,9 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/department' element={<Department />} />
           <Route path='/roomType' element={<RoomType />} />
+          <Route path='/room' element={<Room />} />
+          <Route path='/addOrUpdateRoom' element={<AddOrUpdateRoom />} />
+          <Route path='*' element={<NotFoundPage />} />
         </Route>
 
         <Route path="/auth/login" element={

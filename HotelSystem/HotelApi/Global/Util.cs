@@ -6,9 +6,11 @@ using System.Runtime.Intrinsics.Arm;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using HotelApi.Injuction;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 
 namespace HotelApi.Global
 {
@@ -32,7 +34,7 @@ namespace HotelApi.Global
 
                 Subject = ci,
                 Issuer = config.configuration["Issuer"],
-                Expires = DateTime.Now.AddHours(5),
+                Expires = DateTime.UtcNow.AddSeconds(1),
                 SigningCredentials = credentials
             };
             var tokenHolder = handler.CreateToken(token);
@@ -48,5 +50,7 @@ namespace HotelApi.Global
                 return BitConverter.ToString(data).Replace("-", "");
             }
         }
+
+
     }
 }

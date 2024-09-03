@@ -91,8 +91,9 @@ namespace HotelBuisness
 
         public static List<clsRoomTypeBuisness> getRoomTypes()
         {
-            return clsRoomTypeData.getRoomTypes()
-            .AsEnumerable()
+            var roomTypes = clsRoomTypeData.getRoomTypes()
+            .AsEnumerable();
+            return roomTypes.Count() == 0 ? null : roomTypes
             .Select(e => convertInlineToObject(e))
             .ToList();
         }

@@ -1,17 +1,21 @@
-import { forwardRef, Ref, useEffect, useRef, useState } from 'react'
-import clsSideBarType from '../../types/clsSideBarType';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { forwardRef, Ref, useRef, useState } from 'react'
 import department from '../../assets/department.png';
 import roomType from '../../assets/roomType.png';
+import roomIcon from '../../assets/roomIcon.png';
 import { useNavigate } from 'react-router-dom';
-
+import clsSideBar from '../../model/clsSideBar';
+import PageState from '../../global/PageState';
 const SidBar =
     forwardRef((props: { itmeNumber: number, isOpenDrawer: boolean }, ref: Ref<HTMLDivElement>) => {
         const navigate = useNavigate();
 
-        const sidBarImtems: clsSideBarType[] = [
-            new clsSideBarType(1, department, "department")
-            , new clsSideBarType(2, roomType, "roomType")
-            , new clsSideBarType(3, department, "")
+
+
+        const sidBarImtems: clsSideBar[] = [
+            new clsSideBar(1, department, "department")
+            , new clsSideBar(2, roomType, "roomType")
+            , new clsSideBar(3, roomIcon, "room")
         ]
 
         const itmesRef = useRef<HTMLButtonElement>(null);
@@ -21,40 +25,6 @@ const SidBar =
 
 
 
-        useEffect(
-            () => {
-
-
-                // const handleSideItemHover = () => {
-                //     if (props.isOpenDrawer)
-                //         sidBarImtems.forEach(value => {
-                //             document.getElementById(value.navigationPage)?.addEventListener("mouseover", (e: Event) => {
-                //                const elemt = e.currentTarget as HTMLDivElement;
-                //                elemt.classList.
-                //             })
-                //         })
-                // }
-
-
-
-                // const changeSlideSType = () => {
-                //     if (props.isOpenDrawer)
-                //         sidBarImtems.forEach(value => {
-                //             document.getElementById(value.navigationPage)?.addEventListener("mouseover", (e: Event) => {
-                //                 const elemt = e.currentTarget as HTMLDivElement;
-
-                //             })
-                //         })
-                // }
-
-                // document.addEventListener("resize", changeSlideSType);
-                // return () => {
-                //     document.removeEventListener('resize', changeSlideSType)
-
-                // }
-
-            },
-        )
 
 
 
@@ -74,7 +44,10 @@ const SidBar =
                     sidBarImtems &&
                     sidBarImtems.map((value, key) =>
 
-                        <div className='relative'>
+                        <div
+
+                            key={key}
+                            className='relative'>
                             <div
                                 id={value.imageName}
 
@@ -94,9 +67,31 @@ const SidBar =
                                 ref={itmesRef}
                                 onMouseDown={() => {
 
+                                    switch (value.navigationPage) {
+                                        case 'department': {
+
+                                            PageState.currentSidPage = 1;
+                                            navigate('/' + value.navigationPage)
+                                            break;
+                                        }
+
+                                        case 'roomType': {
+
+                                            PageState.currentSidPage = 2;
+                                            navigate('/' + value.navigationPage)
+                                            break;
+                                        }
+
+                                        default: {
+
+                                            PageState.currentSidPage = 3;
+                                            navigate('/' + value.navigationPage)
+                                            break;
+                                        }
+                                    }
                                     navigate('/' + value.navigationPage)
                                 }}
-                                key={key}
+
 
                                 className={`w-[60px] h-[60px]   rounded-lg flex justify-center items-center mx-auto mt-2 pb-[7px] ps-[3px] text-gray-500  hover:bg-sideBarButtonBackground ${props.itmeNumber === value.index ? 'bg-sideBarButtonBackground' : ''}`}>
                                 <img
@@ -106,6 +101,7 @@ const SidBar =
                                     src={value.imageName} alt="logo"
                                     className={`w-[40px]  ${props.itmeNumber !== value.index ? 'imageUnselectEffect' : ''}`} />
                             </button>
+
                         </div>
                     )
                 }

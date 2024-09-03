@@ -6,12 +6,11 @@ import { useNavigate } from 'react-router-dom'
 import { useForm, } from 'react-hook-form'
 import '../../App.css'
 import clsLoginRequest from '../../model/clsLoginRequest'
-import { useMutation } from 'react-query'
-import AuthServices from "../../services/Adminservices"
 import toast from 'react-hot-toast'
 import localizationService from '../../services/localizationService'
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import IErrorType from '../../types/IErrorType'
+import { useLogin } from '../../hocks/useAdmin'
 
 const Login = () => {
 
@@ -31,8 +30,7 @@ const Login = () => {
     };
 
 
-    const { login } = AuthServices();
-    let loginRequestData = new clsLoginRequest(userName, password);
+    const login = useLogin();
 
     const handleErrorReponse = (error: any) => {
         const errorBody = (error.response) as IErrorType;
@@ -41,52 +39,32 @@ const Login = () => {
 
         if (errorBody === undefined)
             errorMessage = error.message;
-        // console.log(errorMessage);
 
         toast.error(`${errorMessage}`, {
             position: "bottom-right",
         })
-
-
     }
 
 
-    const mutation = useMutation(
+    const loginFunHolder = async () => {
+        await login.mutateAsync(new clsLoginRequest(userName, password)).catch((error) => {
+            handleErrorReponse(error)
+        }).then((data: any) => {
+            const jwtData = data.data.tokenData as string;
+            if (jwtData !== undefined) {
 
-        {
-            mutationFn: (data: clsLoginRequest) => login(data),
-            onError: (erro: any) => {
-                handleErrorReponse(erro)
-
-
-
-            }
-            ,
-            onSuccess: (seecc) => {
-
-                let data = seecc
-                toast.success(`welcom admin`, {
-                    position: "bottom-right",
-                });
                 signIn(
                     {
                         auth: {
-                            token: data,
+                            token: jwtData,
                             type: 'Bearer',
 
                         },
                     })
-                // return Promise.resolve('/dashboard');
-                navigate("/dashboard", { replace: true })
+                navigate("/dashboard")
             }
-            ,
-        }
-    );
-
-    const loginFunHolder = () => {
-        mutation.mutateAsync(loginRequestData);
-    };
-
+        })
+    }
 
 
 

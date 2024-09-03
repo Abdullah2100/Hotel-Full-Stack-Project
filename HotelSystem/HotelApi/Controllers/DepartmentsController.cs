@@ -131,7 +131,7 @@ namespace HotelApi.Controllers
                     return StatusCode(401);
 
                 if (!clsDepartmentBuisness.isDepartmentExistByID(id))
-                    return NotFound();
+                    return StatusCode(404, "could not find Department");
 
 
 

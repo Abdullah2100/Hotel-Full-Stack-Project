@@ -9,7 +9,7 @@ namespace HotelApi.Global
 
     public class clsFileHelper
     {
-        public enum enFileType { adminProfile }
+        public enum enFileType { adminProfile, room }
 
         static string imageFile = "Images";
 
@@ -70,5 +70,25 @@ namespace HotelApi.Global
 
         }
 
+
+
+        public static bool deleteImageFromLocaly(string imageName, enFileType fileType)
+        {
+            try
+            {
+                string fileFullPath = imageFile + "//" + (enFileType)fileType + "//" + imageName.Split('/').Last();
+                if (File.Exists(fileFullPath))
+                {
+                    File.Delete(fileFullPath);
+                    return true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
+        }
     }
 }

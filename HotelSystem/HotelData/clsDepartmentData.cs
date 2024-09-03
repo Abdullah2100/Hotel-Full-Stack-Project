@@ -308,7 +308,7 @@ namespace HotelData
                         {
                             if (reader.Read())
                             {
-                                isBlock = (bool)reader.Read();
+                                isBlock = true;
                             }
                         }
                     }

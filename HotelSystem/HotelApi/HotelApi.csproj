@@ -24,4 +24,8 @@
     <ProjectReference Include="..\HotelBuissness\HotelBuissness.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dto/Room/" />
+  </ItemGroup>
+
 </Project>

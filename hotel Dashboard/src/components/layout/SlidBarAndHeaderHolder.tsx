@@ -13,7 +13,7 @@ const SlidBarAndHeaderHolder = (props: { children: ReactNode, itemNumber: number
         <div
             dir={!isRight ? "rtl" : "ltr"}
 
-            className="w-screen h-screen relative bg-gray-300 ">
+            className="w-screen h-screen relative bg-background ">
             <div
                 onClick={() => changeDrawerState(false)}
                 className={`overlay absolute h-screen w-[100%] backdrop-blur-sm bg-black/30 z ease-in-out transition-all duration-[50%] ${isOpentDrawer === true ? 'flex ' : 'hidden'} z-20`}></div>
@@ -31,7 +31,7 @@ const SlidBarAndHeaderHolder = (props: { children: ReactNode, itemNumber: number
                 }}
                 state={isOpentDrawer}
             />
-            <div className={`${isOpentDrawer === true ? ' w-[100%]' : 'md:w-[calc(100%-80px)]'} w-screen opacity-80 h-fit  pt-10 pb-24  bg-gray-300`}>
+            <div className={`${isOpentDrawer === true ? ' w-[100%]' : 'md:w-[calc(100%-80px)]'} w-[100%] h-fit bg-background   `}>
                 {children}
             </div>
 
