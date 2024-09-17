@@ -66,15 +66,20 @@ create table RoomImages(
   imagePath nvarchar(max) 
 )
 
-  go
+go
+create table Customers(
+customerID int identity(1,1) primary key,
+userName  nvarchar(50) null unique,
+password  nvarchar(max)null,
+personID int references Peoples(personID),
+phone nvarchar(15) UNIQUE,
+image nvarchar(max)  null,
+isBlock bit default 0
+)
 
+select * from Employees
 
-
-from Rooms r
-inner join RoomTypes rt on r.roomTypeID = rt.roomTypeID
-inner join Employees e on r.addBy = e.employeeID
-
-
+update Employees set token='' where employeeID=1
 /*
 go
 

@@ -29,12 +29,14 @@ namespace HotelApi.Global
             ci.AddClaim(
                  new Claim(ClaimTypes.NameIdentifier, personID.ToString())
             );
+            DateTime todayDate = new DateTime();
+            DateTime expireDate = DateTime.UtcNow.AddHours(1);
             var token = new SecurityTokenDescriptor
             {
 
                 Subject = ci,
                 Issuer = config.configuration["Issuer"],
-                Expires = DateTime.UtcNow.AddSeconds(1),
+                Expires = expireDate,
                 SigningCredentials = credentials
             };
             var tokenHolder = handler.CreateToken(token);
