@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotelApi.Dto.PersonDto;
 using HotelApi.Global;
 using HotelBuisness;
 using HotelData;
@@ -30,37 +31,6 @@ namespace HotelApi.Dto.Employee
             departmentData = null;
             personalData = new PersonDataDto();
             isBlock = false;
-        }
-
-
-        public static EmployeeDataDto convertBuisnessEmployeeToDto(clsEmployeeBuisness employee)
-        {
-
-            EmployeeDataDto employeeData = new EmployeeDataDto();
-
-            employeeData.id = employee.id;
-            employeeData.userName = employee.userName;
-            employeeData.address = employee.address;
-            employeeData.phone = employee.phone;
-            if (!string.IsNullOrEmpty(employee.image))
-                employeeData.image = "Images/" + clsFileHelper.enFileType.adminProfile + "/" + employee.image;
-            DepartmentDataDto departmentData = new DepartmentDataDto();
-            if (employee.departmentInfo != null)
-            {
-
-                departmentData.id = employee.departmentID;
-                departmentData.name = employee.departmentInfo.name;
-            }
-            PersonDataDto personData = new PersonDataDto();
-            personData.firstName = employee.personInfo.firstName;
-            personData.lastName = employee.personInfo.lastName;
-            personData.brithDay = employee.personInfo.brithDay;
-            personData.nationalNo = employee.personInfo.nationalNo;
-            employeeData.personalData = personData;
-            employeeData.departmentData = departmentData;
-            employeeData.isBlock = employee.isBlock;
-
-            return employeeData;
         }
 
         public override bool isPerson()

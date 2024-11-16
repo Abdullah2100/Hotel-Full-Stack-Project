@@ -274,14 +274,14 @@ namespace HotelApi.Controllers
                 string? token = HttpContext.Request.Headers["Authorization"];
 
 
-                clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByToken(token.Split(" ").Last());
+                /* clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByToken(token.Split(" ").Last());
 
-                if (employee == null)
-                    return StatusCode(401);
+                 if (employee == null)
+                     return StatusCode(401);
 
-                var rooms = clsRoomBuisness.getRooms();
+                 var rooms = clsRoomBuisness.getRooms();*/
 
-                return Ok(rooms);
+                return Ok("");
             }
             catch (Exception ex)
             {
@@ -304,16 +304,16 @@ namespace HotelApi.Controllers
                 string? token = HttpContext.Request.Headers["Authorization"];
 
 
-                clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByToken(token.Split(" ").Last());
+                /*     clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByToken(token.Split(" ").Last());
 
-                if (employee == null)
-                    return StatusCode(401, "User is Not Found");
+                     if (employee == null)
+                         return StatusCode(401, "User is Not Found");
 
-                var rooms = clsRoomBuisness.getRoomByID(id);
-                if (rooms == null)
-                    return StatusCode(204, "No Room Found");
+                     var rooms = clsRoomBuisness.getRoomByID(id);
+                     if (rooms == null)
+                         return StatusCode(204, "No Room Found");*/
 
-                return Ok(rooms);
+                return Ok("");
             }
             catch (Exception ex)
             {
@@ -336,14 +336,14 @@ namespace HotelApi.Controllers
                 string? token = HttpContext.Request.Headers["Authorization"];
 
 
-                clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByToken(token.Split(" ").Last());
+                /*clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByToken(token.Split(" ").Last());
 
                 if (employee == null)
                     return StatusCode(401, "User is Not Found");
 
 
                 if (!deleteRoomAndImage(id))
-                    return StatusCode(204, "No Room Found");
+                    return StatusCode(204, "No Room Found");*/
 
 
                 return Ok("Room Is Deleted Seccessfuly");
@@ -368,15 +368,15 @@ namespace HotelApi.Controllers
                 string? token = HttpContext.Request.Headers["Authorization"];
 
 
-                clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByToken(token.Split(" ").Last());
+                /* clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByToken(token.Split(" ").Last());
 
-                if (employee == null)
-                    return StatusCode(401, "User is Not Found");
+                 if (employee == null)
+                     return StatusCode(401, "User is Not Found");
 
-                if (!clsRoomBuisness.deleteRoom(id))
-                    return StatusCode(204, "room is Not Found");
+                 if (!clsRoomBuisness.deleteRoom(id))
+                     return StatusCode(204, "room is Not Found");
 
-                var roomImages = clsRoomImagesBuisness.getRoomImages(id);
+                 var roomImages = clsRoomImagesBuisness.getRoomImages(id);*/
 
 
 
@@ -408,36 +408,36 @@ namespace HotelApi.Controllers
             {
                 string? token = HttpContext.Request.Headers["Authorization"];
 
+                /*
+                                clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByToken(token.Split(" ").Last());
 
-                clsEmployeeBuisness? employee = clsEmployeeBuisness.findEmployeeByToken(token.Split(" ").Last());
+                                if (employee == null)
+                                    return StatusCode(401);
 
-                if (employee == null)
-                    return StatusCode(401);
+                                clsRoomBuisness? room = clsRoomBuisness.getRoomByID(id);
+                                if (room == null)
+                                    return StatusCode(404, "room not found");
 
-                clsRoomBuisness? room = clsRoomBuisness.getRoomByID(id);
-                if (room == null)
-                    return StatusCode(404, "room not found");
+                                room.title = roomData.title ?? "";
+                                room.description = roomData.description ?? "";
+                                room.capacity = roomData.capacity ?? 0;
+                                room.bedNumber = roomData.bedNumber ?? 0;
+                                room.pricePerDay = roomData.pricePerDay ?? 0;
+                                room.addBy = employee.id;
+                                room.floorNumber = roomData.floorNumber ?? 0;
+                                clsRoomTypeBuisness? roomTyp = clsRoomTypeBuisness.findRoomTypeByName(roomData.roomType ?? "");
+                                if (roomTyp != null)
+                                    room.roomTypeID = roomTyp.id;
 
-                room.title = roomData.title ?? "";
-                room.description = roomData.description ?? "";
-                room.capacity = roomData.capacity ?? 0;
-                room.bedNumber = roomData.bedNumber ?? 0;
-                room.pricePerDay = roomData.pricePerDay ?? 0;
-                room.addBy = employee.id;
-                room.floorNumber = roomData.floorNumber ?? 0;
-                clsRoomTypeBuisness? roomTyp = clsRoomTypeBuisness.findRoomTypeByName(roomData.roomType ?? "");
-                if (roomTyp != null)
-                    room.roomTypeID = roomTyp.id;
+                                if (room.save())
+                                {
 
-                if (room.save())
-                {
+                                    if (updateAndSaveNewImageToLocalApi(roomData, id))
+                                        return StatusCode(201, "add Done");
 
-                    if (updateAndSaveNewImageToLocalApi(roomData, id))
-                        return StatusCode(201, "add Done");
-
-                    return StatusCode(500, "could not save image room");
-                }
-
+                                    return StatusCode(500, "could not save image room");
+                                }
+                */
                 return StatusCode(500, "some thing wrong");
 
 

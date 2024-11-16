@@ -33,10 +33,11 @@ namespace HotelApi.Controllers
             {
                 string? token = HttpContext.Request.Headers["Authorization"];
 
-                if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
+                /*if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
                     return StatusCode(401);
                 var roomTypes = clsRoomTypeBuisness.getRoomTypes();
-                return Ok(roomTypes);
+                */
+                return Ok("");
             }
             catch (Exception ex)
             {
@@ -58,7 +59,7 @@ namespace HotelApi.Controllers
 
                 string? token = HttpContext.Request.Headers["Authorization"];
 
-                if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
+                /*if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
                     return StatusCode(401);
                 clsRoomTypeBuisness roomType = clsRoomTypeBuisness.findRoomTypeByName(name);
                 if (roomType != null)
@@ -66,7 +67,7 @@ namespace HotelApi.Controllers
                 roomType = new clsRoomTypeBuisness();
                 roomType.name = name;
 
-                roomType.save();
+                roomType.save();*/
 
                 return StatusCode(201, "add seccsfuly");
             }
@@ -91,15 +92,15 @@ namespace HotelApi.Controllers
 
                 string? token = HttpContext.Request.Headers["Authorization"];
 
-                if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
-                    return StatusCode(401);
-                clsRoomTypeBuisness roomType = clsRoomTypeBuisness.findRoomTypeByID(departmentData.id);
-                if (roomType == null)
-                    return StatusCode(406, "roomType name is already exist");
+                /* if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
+                     return StatusCode(401);
+                 clsRoomTypeBuisness roomType = clsRoomTypeBuisness.findRoomTypeByID(departmentData.id);
+                 if (roomType == null)
+                     return StatusCode(406, "roomType name is already exist");
 
-                roomType.name = departmentData.name;
+                 roomType.name = departmentData.name;
 
-                roomType.save();
+                 roomType.save();*/
 
                 return Ok("add seccsfuly");
             }
@@ -126,7 +127,7 @@ namespace HotelApi.Controllers
 
                 string? token = HttpContext.Request.Headers["Authorization"];
 
-                if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
+                /*if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
                     return StatusCode(401);
 
 
@@ -137,7 +138,7 @@ namespace HotelApi.Controllers
                 if (clsRoomTypeBuisness.deleteRoomType(id))
                 {
                     return Ok("update  seccsfuly");
-                }
+                }*/
 
                 return StatusCode(500, "some thing wrong");
 

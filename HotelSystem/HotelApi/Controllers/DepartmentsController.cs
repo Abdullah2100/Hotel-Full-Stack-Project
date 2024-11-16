@@ -34,10 +34,10 @@ namespace HotelApi.Controllers
             {
                 string? token = HttpContext.Request.Headers["Authorization"];
 
-                if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
-                    return StatusCode(401);
-                var departments = clsDepartmentBuisness.getDepartments();
-                return Ok(departments);
+                /* if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
+                     return StatusCode(401);
+                 var departments = clsDepartmentBuisness.getDepartments();*/
+                return Ok("");
             }
             catch (Exception ex)
             {
@@ -59,7 +59,7 @@ namespace HotelApi.Controllers
 
                 string? token = HttpContext.Request.Headers["Authorization"];
 
-                if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
+                /*if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
                     return StatusCode(401);
                 clsDepartmentBuisness depatment = clsDepartmentBuisness.findDepartmentByName(name);
                 if (depatment != null)
@@ -68,7 +68,7 @@ namespace HotelApi.Controllers
                 depatment.name = name;
 
                 depatment.save();
-
+*/
                 return StatusCode(201, "add seccsfuly");
             }
             catch (Exception ex)
@@ -92,15 +92,15 @@ namespace HotelApi.Controllers
 
                 string? token = HttpContext.Request.Headers["Authorization"];
 
-                if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
-                    return StatusCode(401);
-                clsDepartmentBuisness depatment = clsDepartmentBuisness.findDepartmentByID(departmentData.id);
-                if (depatment == null)
-                    return StatusCode(406, "department name is already exist");
+                /*  if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
+                      return StatusCode(401);
+                  clsDepartmentBuisness depatment = clsDepartmentBuisness.findDepartmentByID(departmentData.id);
+                  if (depatment == null)
+                      return StatusCode(406, "department name is already exist");
 
-                depatment.name = departmentData.name;
+                  depatment.name = departmentData.name;
 
-                depatment.save();
+                  depatment.save();*/
 
                 return Ok("add seccsfuly");
             }
@@ -127,18 +127,19 @@ namespace HotelApi.Controllers
 
                 string? token = HttpContext.Request.Headers["Authorization"];
 
-                if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
-                    return StatusCode(401);
+                /* if (!clsEmployeeBuisness.isEmployeeExistByToken(token.Split(" ").Last()))
+                     return StatusCode(401);
 
-                if (!clsDepartmentBuisness.isDepartmentExistByID(id))
-                    return StatusCode(404, "could not find Department");
+                 if (!clsDepartmentBuisness.isDepartmentExistByID(id))
+                     return StatusCode(404, "could not find Department");
 
 
 
-                if (clsDepartmentBuisness.deleteDepartment(id))
-                {
-                    return Ok("update  seccsfuly");
-                }
+                 if (clsDepartmentBuisness.deleteDepartment(id))
+                 {
+                     return Ok("update  seccsfuly");
+                 }
+                 */
 
                 return StatusCode(500, "some thing wrong");
 

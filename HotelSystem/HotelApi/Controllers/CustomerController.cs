@@ -13,7 +13,7 @@ using Microsoft.Extensions.Primitives;
 namespace HotelApi.customer.Controllers
 {
     //[Route("api/[controller]")]
-   [Route("api/Customer")]
+    [Route("api/Customer")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
@@ -25,7 +25,7 @@ namespace HotelApi.customer.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("/customer/login")]
+        [HttpPost("/login")]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
@@ -65,7 +65,7 @@ namespace HotelApi.customer.Controllers
 
 
         [Authorize]
-        [HttpPut("/customer")]
+        [HttpPut("/update")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -131,7 +131,7 @@ namespace HotelApi.customer.Controllers
 
 
         [Authorize]
-        [HttpGet("/customer/")]
+        [HttpGet("/customer")]
         [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]

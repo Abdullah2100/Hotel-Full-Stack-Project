@@ -1,4 +1,5 @@
 ﻿using HotelData;
+using HotelData.Dto;
 using System;
 using System.Data;
 
@@ -27,7 +28,7 @@ namespace HotelBuisness
 
         public clsRoomTypeBuisness? roomTypeInfo { get; set; }
 
-        public clsEmployeeBuisness? addByInfo { get; set; }
+        public clsEmployeeDto? addByInfo { get; set; }
 
         public List<clsRoomImagesBuisness>? roomImages { get; set; }
         public clsRoomBuisness()
